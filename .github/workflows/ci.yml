@@ -1,4 +1,4 @@
-name: CI
+name: Check for lints
 
 on:
   pull_request:
