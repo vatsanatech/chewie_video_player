@@ -28,8 +28,7 @@ class MaterialControls extends StatefulWidget {
   }
 }
 
-class _MaterialControlsState extends State<MaterialControls>
-    with SingleTickerProviderStateMixin {
+class _MaterialControlsState extends State<MaterialControls> with SingleTickerProviderStateMixin {
   late PlayerNotifier notifier;
   late VideoPlayerValue _latestValue;
   double? _latestVolume;
@@ -587,9 +586,12 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   Widget _buildProgressBar() {
+
     return Expanded(
       child: MaterialVideoProgressBar(
         controller,
+        height: _chewieController?.progressBarHeight,
+        handleHeight: _chewieController?.progressBarHandleHeight,
         onDragStart: () {
           setState(() {
             _dragging = true;
