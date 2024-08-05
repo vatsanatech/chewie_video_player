@@ -111,6 +111,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
+      playerEventEmitter: eventHandler,
       autoPlay: true,
       looping: true,
       progressIndicatorDelay:
@@ -157,6 +158,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
   }
 
   int currPlayIndex = 0;
+
+  void eventHandler(ChewiePlayerEvents event, [Map<String, dynamic>? properties]){}
 
   Future<void> toggleVideo() async {
     await _videoPlayerController1.pause();
