@@ -275,6 +275,8 @@ class ChewieController extends ChangeNotifier {
     this.fullScreenByDefault = false,
     this.cupertinoProgressColors,
     this.materialProgressColors,
+    this.progressBarHeight,
+    this.progressBarHandleHeight,
     this.placeholder,
     this.overlay,
     this.showControlsOnInitialize = true,
@@ -288,6 +290,7 @@ class ChewieController extends ChangeNotifier {
     this.subtitle,
     this.subtitleBuilder,
     this.customControls,
+    this.fixedControls,
     this.errorBuilder,
     this.allowedScreenSleep = true,
     this.isLive = false,
@@ -323,6 +326,8 @@ class ChewieController extends ChangeNotifier {
     bool? fullScreenByDefault,
     ChewieProgressColors? cupertinoProgressColors,
     ChewieProgressColors? materialProgressColors,
+    double? progressBarHeight,
+    double? progressBarHandleHeight,
     Widget? placeholder,
     Widget? overlay,
     bool? showControlsOnInitialize,
@@ -336,6 +341,7 @@ class ChewieController extends ChangeNotifier {
     Subtitles? subtitle,
     Widget Function(BuildContext, dynamic)? subtitleBuilder,
     Widget? customControls,
+    Widget? fixedControls,
     Widget Function(BuildContext, String)? errorBuilder,
     bool? allowedScreenSleep,
     bool? isLive,
@@ -373,6 +379,8 @@ class ChewieController extends ChangeNotifier {
           cupertinoProgressColors ?? this.cupertinoProgressColors,
       materialProgressColors:
           materialProgressColors ?? this.materialProgressColors,
+      progressBarHeight: progressBarHeight ?? this.progressBarHeight,
+      progressBarHandleHeight: progressBarHandleHeight ?? this.progressBarHandleHeight,
       placeholder: placeholder ?? this.placeholder,
       overlay: overlay ?? this.overlay,
       showControlsOnInitialize:
@@ -384,6 +392,7 @@ class ChewieController extends ChangeNotifier {
       subtitle: subtitle ?? this.subtitle,
       subtitleBuilder: subtitleBuilder ?? this.subtitleBuilder,
       customControls: customControls ?? this.customControls,
+      fixedControls: fixedControls ?? this.fixedControls,
       errorBuilder: errorBuilder ?? this.errorBuilder,
       allowedScreenSleep: allowedScreenSleep ?? this.allowedScreenSleep,
       isLive: isLive ?? this.isLive,
@@ -480,6 +489,9 @@ class ChewieController extends ChangeNotifier {
   /// [CupertinoControls] for reference.
   final Widget? customControls;
 
+  /// Defines customised controls that do not hide.
+  final Widget? fixedControls;
+
   /// When the video playback runs into an error, you can build a custom
   /// error message.
   final Widget Function(BuildContext context, String errorMessage)?
@@ -498,6 +510,14 @@ class ChewieController extends ChangeNotifier {
   /// The colors to use for the Material Progress Bar. By default, the Material
   /// player uses the colors from your Theme.
   final ChewieProgressColors? materialProgressColors;
+
+  /// The height of progress bar
+  /// By default, the value is 10.0
+  final double? progressBarHeight;
+
+  /// The height of progress bar seek handle
+  /// By default, the value is 6.0
+  final double? progressBarHandleHeight;
 
   /// The placeholder is displayed underneath the Video before it is initialized
   /// or played.
