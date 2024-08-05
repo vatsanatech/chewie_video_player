@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chewie/src/center_play_button.dart';
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/chewie_progress_colors.dart';
+import 'package:chewie/src/constants/events_enum.dart';
 import 'package:chewie/src/helpers/utils.dart';
 import 'package:chewie/src/material/material_progress_bar.dart';
 import 'package:chewie/src/material/widgets/options_dialog.dart';
@@ -322,9 +323,11 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
 
         if (_latestValue.volume == 0) {
           controller.setVolume(_latestVolume ?? 0.5);
+          chewieController.playerEventEmitter(ChewiePlayerEvents.unmute);
         } else {
           _latestVolume = controller.value.volume;
           controller.setVolume(0.0);
+          chewieController.playerEventEmitter(ChewiePlayerEvents.mute);
         }
       },
       child: AnimatedOpacity(
@@ -539,7 +542,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         notifier.hideStuff = false;
         _hideTimer?.cancel();
         controller.pause();
-      } else {
+        chewieController.playerEventEmitter(ChewiePlayerEvents.pause);
+      }
+      else {
         _cancelAndRestartTimer();
 
         if (!controller.value.isInitialized) {
@@ -552,6 +557,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           }
           controller.play();
         }
+
+        chewieController.playerEventEmitter(ChewiePlayerEvents.play);
       }
     });
   }
