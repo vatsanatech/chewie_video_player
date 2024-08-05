@@ -90,6 +90,12 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
               else
                 _buildHitArea(),
               _buildActionBar(),
+              if(chewieController.customControls != null)
+                AnimatedOpacity(
+                  opacity: notifier.hideStuff ? 0.0 : 1.0,
+                  duration: const Duration(milliseconds: 250),
+                  child: chewieController.customControls!,
+                ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -105,6 +111,12 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   _buildBottomBar(context),
                 ],
               ),
+              if (chewieController.allowMuting)
+                Positioned(
+                  top: 8,
+                  right: 16,
+                  child: _buildMuteButton(controller),
+                ),
             ],
           ),
         ),
@@ -275,8 +287,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                       const Expanded(child: Text('LIVE'))
                     else
                       _buildPosition(iconColor),
-                    if (chewieController.allowMuting)
-                      _buildMuteButton(controller),
                     const Spacer(),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
                   ],
@@ -322,13 +332,17 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         duration: const Duration(milliseconds: 300),
         child: ClipRect(
           child: Container(
-            height: barHeight,
-            padding: const EdgeInsets.only(
-              left: 6.0,
+            height: 26,
+            width: 26,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(13),
+              color: const Color(0xff737373),
             ),
             child: Icon(
               _latestValue.volume > 0 ? Icons.volume_up : Icons.volume_off,
               color: Colors.white,
+              size: 20,
             ),
           ),
         ),
@@ -378,7 +392,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             _cancelAndRestartTimer();
           }
         } else {
-          _playPause();
+          // _playPause();
 
           setState(() {
             notifier.hideStuff = true;
