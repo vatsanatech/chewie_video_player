@@ -56,6 +56,39 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   void initState() {
     super.initState();
     notifier = Provider.of<PlayerNotifier>(context, listen: false);
+    controller.value.isCompleted;
+  }
+
+  @override
+  void didChangeDependencies() {
+    final oldController = _chewieController;
+    _chewieController = ChewieController.of(context);
+    controller = chewieController.videoPlayerController;
+
+    if (oldController != chewieController) {
+      _dispose();
+      _initialize();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _dispose();
+    super.dispose();
+  }
+
+  void checkForVideoEnd() {
+    if(controller.value.isCompleted){
+      chewieController.playerEventEmitter(ChewiePlayerEvents.finished);
+    }
+  }
+
+  void _dispose() {
+    controller.removeListener(_updateState);
+    _hideTimer?.cancel();
+    _initTimer?.cancel();
+    _showAfterExpandCollapseTimer?.cancel();
   }
 
   @override
@@ -123,33 +156,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _dispose();
-    super.dispose();
-  }
-
-  void _dispose() {
-    controller.removeListener(_updateState);
-    _hideTimer?.cancel();
-    _initTimer?.cancel();
-    _showAfterExpandCollapseTimer?.cancel();
-  }
-
-  @override
-  void didChangeDependencies() {
-    final oldController = _chewieController;
-    _chewieController = ChewieController.of(context);
-    controller = chewieController.videoPlayerController;
-
-    if (oldController != chewieController) {
-      _dispose();
-      _initialize();
-    }
-
-    super.didChangeDependencies();
   }
 
   Widget _buildActionBar() {
@@ -596,9 +602,12 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         _bufferingDisplayTimer = null;
         _displayBufferingIndicator = false;
       }
-    } else {
+    }
+    else {
       _displayBufferingIndicator = controller.value.isBuffering;
     }
+
+    checkForVideoEnd();
 
     setState(() {
       _latestValue = controller.value;
@@ -607,7 +616,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   }
 
   Widget _buildProgressBar() {
-
     return Expanded(
       child: MaterialVideoProgressBar(
         controller,
