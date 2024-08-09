@@ -292,6 +292,7 @@ class ChewieController extends ChangeNotifier {
     this.subtitleBuilder,
     this.customControls,
     this.fixedControls,
+    this.landscapeControls,
     this.errorBuilder,
     this.allowedScreenSleep = true,
     this.isLive = false,
@@ -344,6 +345,7 @@ class ChewieController extends ChangeNotifier {
     Widget Function(BuildContext, dynamic)? subtitleBuilder,
     Widget? customControls,
     Widget? fixedControls,
+    Widget? landscapeControls,
     Widget Function(BuildContext, String)? errorBuilder,
     bool? allowedScreenSleep,
     bool? isLive,
@@ -396,6 +398,7 @@ class ChewieController extends ChangeNotifier {
       subtitleBuilder: subtitleBuilder ?? this.subtitleBuilder,
       customControls: customControls ?? this.customControls,
       fixedControls: fixedControls ?? this.fixedControls,
+      landscapeControls: landscapeControls ?? this.landscapeControls,
       errorBuilder: errorBuilder ?? this.errorBuilder,
       allowedScreenSleep: allowedScreenSleep ?? this.allowedScreenSleep,
       isLive: isLive ?? this.isLive,
@@ -495,6 +498,9 @@ class ChewieController extends ChangeNotifier {
 
   /// Defines customised controls that do not hide.
   final Widget? fixedControls;
+
+  /// Defines customised landscape controls. Visibility same as [customControls].
+  final Widget? landscapeControls;
 
   /// When the video playback runs into an error, you can build a custom
   /// error message.
