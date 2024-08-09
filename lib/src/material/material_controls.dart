@@ -56,7 +56,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   void initState() {
     super.initState();
     notifier = Provider.of<PlayerNotifier>(context, listen: false);
-    controller.value.isCompleted;
   }
 
   @override
@@ -268,7 +267,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     BuildContext context,
   ) {
     final iconColor = Theme.of(context).textTheme.labelLarge!.color;
-
     return AnimatedOpacity(
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
@@ -313,6 +311,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                     ),
                   ),
                 ),
+              if(chewieController.isFullScreen && chewieController.landscapeControls != null)
+                chewieController.landscapeControls!,
             ],
           ),
         ),
