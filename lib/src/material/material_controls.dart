@@ -11,6 +11,7 @@ import 'package:chewie/src/material/widgets/playback_speed_dialog.dart';
 import 'package:chewie/src/models/option_item.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/notifiers/index.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -142,6 +143,12 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                           _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
+                  if(chewieController.isFullScreen && chewieController.landscapeControls != null)
+                    AnimatedOpacity(
+                      opacity: notifier.hideStuff ? 0.0 : 1.0,
+                      duration: const Duration(milliseconds: 250),
+                      child: chewieController.landscapeControls!,
+                    ),
                 ],
               ),
               if (chewieController.allowMuting)
@@ -297,9 +304,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   ],
                 ),
               ),
-              SizedBox(
-                height: chewieController.isFullScreen ? 15.0 : 0,
-              ),
+              // SizedBox(
+              //   height: chewieController.isFullScreen ? 15.0 : 0,
+              // ),
               if (!chewieController.isLive)
                 Expanded(
                   child: Container(
@@ -311,8 +318,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                     ),
                   ),
                 ),
-              if(chewieController.isFullScreen && chewieController.landscapeControls != null)
-                chewieController.landscapeControls!,
             ],
           ),
         ),
@@ -346,10 +351,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13),
-              color: const Color(0xff737373),
             ),
             child: Icon(
-              _latestValue.volume > 0 ? Icons.volume_up : Icons.volume_off,
+              _latestValue.volume > 0 ? CupertinoIcons.speaker_fill : CupertinoIcons.speaker_slash_fill,
               color: Colors.white,
               size: 20,
             ),
