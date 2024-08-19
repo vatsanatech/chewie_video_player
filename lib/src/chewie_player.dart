@@ -601,6 +601,14 @@ class ChewieController extends ChangeNotifier {
 
   bool get isPlaying => videoPlayerController.value.isPlaying;
 
+  bool isDisposed = false;
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
+  }
+
   Future<dynamic> _initialize() async {
     await videoPlayerController.setLooping(looping);
 
@@ -634,18 +642,21 @@ class ChewieController extends ChangeNotifier {
   }
 
   void enterFullScreen() {
+    if(isDisposed || _isFullScreen) return;
     _isFullScreen = true;
     playerEventEmitter(ChewiePlayerEvents.enterFullscreen);
     notifyListeners();
   }
 
   void exitFullScreen() {
+    if(isDisposed || !_isFullScreen) return;
     _isFullScreen = false;
     playerEventEmitter(ChewiePlayerEvents.exitFullscreen);
     notifyListeners();
   }
 
   void toggleFullScreen() {
+    if(isDisposed) return;
     _isFullScreen = !_isFullScreen;
     if(_isFullScreen){
       playerEventEmitter(ChewiePlayerEvents.enterFullscreen);
