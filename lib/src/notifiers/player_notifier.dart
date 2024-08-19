@@ -14,9 +14,19 @@ class PlayerNotifier extends ChangeNotifier {
 
   bool get hideStuff => _hideStuff;
 
+  bool isDisposed = false;
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
+  }
+
   set hideStuff(bool value) {
-    _hideStuff = value;
-    notifyListeners();
+    if(!isDisposed) {
+      _hideStuff = value;
+      notifyListeners();
+    }
   }
 
   // ignore: prefer_constructors_over_static_methods
