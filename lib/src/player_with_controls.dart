@@ -27,8 +27,10 @@ class PlayerWithControls extends StatelessWidget {
       return chewieController.showControls ? Stack(
         children: [
           const AdaptiveControls(),
-          if(chewieController.fixedControls != null)
-            chewieController.fixedControls!,
+          if(chewieController.landscapeControlsOverlay != null)
+            chewieController.landscapeControlsOverlay!,
+          if(chewieController.portraitFixedControls != null && !chewieController.isFullScreen)
+            chewieController.portraitFixedControls!,
         ],
       ) : const SizedBox();
     }
