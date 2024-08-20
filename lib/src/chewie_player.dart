@@ -291,7 +291,8 @@ class ChewieController extends ChangeNotifier {
     this.subtitle,
     this.subtitleBuilder,
     this.customControls,
-    this.fixedControls,
+    this.landscapeControlsOverlay,
+    this.portraitFixedControls,
     this.landscapeControls,
     this.errorBuilder,
     this.allowedScreenSleep = true,
@@ -344,7 +345,8 @@ class ChewieController extends ChangeNotifier {
     Subtitles? subtitle,
     Widget Function(BuildContext, dynamic)? subtitleBuilder,
     Widget? customControls,
-    Widget? fixedControls,
+    Widget? landscapeControlsOverlay,
+    Widget? portraitFixedControls,
     Widget? landscapeControls,
     Widget Function(BuildContext, String)? errorBuilder,
     bool? allowedScreenSleep,
@@ -397,7 +399,8 @@ class ChewieController extends ChangeNotifier {
       subtitle: subtitle ?? this.subtitle,
       subtitleBuilder: subtitleBuilder ?? this.subtitleBuilder,
       customControls: customControls ?? this.customControls,
-      fixedControls: fixedControls ?? this.fixedControls,
+      landscapeControlsOverlay: landscapeControlsOverlay ?? this.landscapeControlsOverlay,
+      portraitFixedControls: portraitFixedControls ?? this.portraitFixedControls,
       landscapeControls: landscapeControls ?? this.landscapeControls,
       errorBuilder: errorBuilder ?? this.errorBuilder,
       allowedScreenSleep: allowedScreenSleep ?? this.allowedScreenSleep,
@@ -496,8 +499,11 @@ class ChewieController extends ChangeNotifier {
   /// [CupertinoControls] for reference.
   final Widget? customControls;
 
-  /// Defines customised controls that do not hide.
-  final Widget? fixedControls;
+  /// Defines landscape controls overlay.
+  final Widget? landscapeControlsOverlay;
+
+  /// Defines portrait customised controls that do not hide.
+  final Widget? portraitFixedControls;
 
   /// Defines customised landscape controls. Visibility same as [customControls].
   final Widget? landscapeControls;
