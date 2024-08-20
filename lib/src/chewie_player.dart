@@ -642,14 +642,14 @@ class ChewieController extends ChangeNotifier {
   }
 
   void enterFullScreen() {
-    if(isDisposed || _isFullScreen) return;
+    if(isDisposed) return;
     _isFullScreen = true;
     playerEventEmitter(ChewiePlayerEvents.enterFullscreen);
     notifyListeners();
   }
 
   void exitFullScreen() {
-    if(isDisposed || !_isFullScreen) return;
+    if(isDisposed) return;
     _isFullScreen = false;
     playerEventEmitter(ChewiePlayerEvents.exitFullscreen);
     notifyListeners();
