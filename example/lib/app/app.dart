@@ -190,6 +190,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
                             .videoPlayerController.value.isInitialized
                     ? Chewie(
                         controller: _chewieController!,
+                        onPushFullScreen:(){} ,
+                  contextPassed: context,
                       )
                     : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,

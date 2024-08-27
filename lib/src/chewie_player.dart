@@ -10,6 +10,7 @@ import 'package:chewie/src/player_with_controls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -29,10 +30,14 @@ class Chewie extends StatefulWidget {
   const Chewie({
     super.key,
     required this.controller,
+    required this.contextPassed,
+    required this.onPushFullScreen,
   });
 
   /// The [ChewieController]
   final ChewieController controller;
+  final BuildContext contextPassed;
+  final Function onPushFullScreen;
 
   @override
   ChewieState createState() {
@@ -76,10 +81,7 @@ class ChewieState extends State<Chewie> {
       _isFullScreen = isControllerFullScreen;
       await _pushFullScreenWidget(context);
     } else if (_isFullScreen) {
-      Navigator.of(
-        context,
-        rootNavigator: widget.controller.useRootNavigator,
-      ).pop();
+      GoRouter.of(widget.contextPassed).pop();
       _isFullScreen = false;
     }
   }
@@ -154,8 +156,15 @@ class ChewieState extends State<Chewie> {
   }
 
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
-    final TransitionRoute<void> route = PageRouteBuilder<void>(
-      pageBuilder: _fullScreenRoutePageBuilder,
+    // final TransitionRoute<void> route = PageRouteBuilder<void>(
+    //   pageBuilder: _fullScreenRoutePageBuilder,
+    // );
+    final controllerProvider = ChewieControllerProvider(
+      controller: widget.controller,
+      child: ChangeNotifierProvider<PlayerNotifier>.value(
+        value: notifier,
+        builder: (context, w) => const PlayerWithControls(),
+      ),
     );
 
     onEnterFullScreen();
@@ -164,10 +173,11 @@ class ChewieState extends State<Chewie> {
       WakelockPlus.enable();
     }
 
-    await Navigator.of(
-      context,
-      rootNavigator: widget.controller.useRootNavigator,
-    ).push(route);
+    // await GoRouter.of(widget.contextPassed).push(
+    //   '/watch/fullscreen',
+    //   extra: widget.controller,
+    // );
+    await widget.onPushFullScreen();
 
     if (kIsWeb) {
       _reInitializeControllers();
