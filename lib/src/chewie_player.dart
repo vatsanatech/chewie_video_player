@@ -31,11 +31,13 @@ class Chewie extends StatefulWidget {
     super.key,
     required this.controller,
     required this.contextPassed,
+    required this.onPushFullScreen,
   });
 
   /// The [ChewieController]
   final ChewieController controller;
   final BuildContext contextPassed;
+  final Function onPushFullScreen;
 
   @override
   ChewieState createState() {
@@ -171,10 +173,11 @@ class ChewieState extends State<Chewie> {
       WakelockPlus.enable();
     }
 
-    await GoRouter.of(widget.contextPassed).push(
-      '/watch/fullscreen',
-      extra: controllerProvider,
-    );
+    // await GoRouter.of(widget.contextPassed).push(
+    //   '/watch/fullscreen',
+    //   extra: widget.controller,
+    // );
+    await widget.onPushFullScreen();
 
     if (kIsWeb) {
       _reInitializeControllers();
