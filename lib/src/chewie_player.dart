@@ -32,12 +32,14 @@ class Chewie extends StatefulWidget {
     required this.controller,
     required this.contextPassed,
     required this.onPushFullScreen,
+    this.isFullscreen = false,
   });
 
   /// The [ChewieController]
   final ChewieController controller;
   final BuildContext contextPassed;
   final Function onPushFullScreen;
+  final bool isFullscreen;
 
   @override
   ChewieState createState() {
@@ -51,11 +53,16 @@ class ChewieState extends State<Chewie> {
   bool get isControllerFullScreen => widget.controller.isFullScreen;
   late PlayerNotifier notifier;
 
+  static bool allowPop = true;
+
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(listener);
     notifier = PlayerNotifier.init();
+    if(widget.isFullscreen){
+      _isFullScreen = true;
+    }
   }
 
   @override
@@ -71,6 +78,9 @@ class ChewieState extends State<Chewie> {
       widget.controller.addListener(listener);
     }
     super.didUpdateWidget(oldWidget);
+    if(widget.isFullscreen){
+      _isFullScreen = true;
+    }
     if (_isFullScreen != isControllerFullScreen) {
       widget.controller._isFullScreen = _isFullScreen;
     }
@@ -81,8 +91,18 @@ class ChewieState extends State<Chewie> {
       _isFullScreen = isControllerFullScreen;
       await _pushFullScreenWidget(context);
     } else if (_isFullScreen) {
-      GoRouter.of(widget.contextPassed).pop();
+      popFullScreen();
       _isFullScreen = false;
+    }
+  }
+
+  void popFullScreen() {
+    if(allowPop){
+      allowPop = false;
+      GoRouter.of(context).pop();
+      Future.delayed(const Duration(seconds: 1), (){
+        allowPop = true;
+      });
     }
   }
 
@@ -156,9 +176,6 @@ class ChewieState extends State<Chewie> {
   }
 
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
-    // final TransitionRoute<void> route = PageRouteBuilder<void>(
-    //   pageBuilder: _fullScreenRoutePageBuilder,
-    // );
     final controllerProvider = ChewieControllerProvider(
       controller: widget.controller,
       child: ChangeNotifierProvider<PlayerNotifier>.value(
