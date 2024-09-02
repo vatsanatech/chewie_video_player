@@ -174,7 +174,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           duration: const Duration(milliseconds: 250),
           child: Row(
             children: [
-              _buildSubtitleToggle(),
+              // _buildSubtitleToggle(),
               if (chewieController.showOptions) _buildOptionsButton(),
             ],
           ),
