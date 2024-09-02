@@ -471,35 +471,35 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     );
   }
 
-  Widget _buildSubtitleToggle() {
-    //if don't have subtitle hiden button
-    if (chewieController.subtitle?.isEmpty ?? true) {
-      return const SizedBox();
-    }
-    return GestureDetector(
-      onTap: _onSubtitleTap,
-      child: Container(
-        height: barHeight,
-        color: Colors.transparent,
-        padding: const EdgeInsets.only(
-          left: 12.0,
-          right: 12.0,
-        ),
-        child: Icon(
-          _subtitleOn
-              ? Icons.closed_caption
-              : Icons.closed_caption_off_outlined,
-          color: _subtitleOn ? Colors.white : Colors.grey[700],
-        ),
-      ),
-    );
-  }
+  // Widget _buildSubtitleToggle() {
+  //   //if don't have subtitle hiden button
+  //   if (chewieController.subtitle?.isEmpty ?? true) {
+  //     return const SizedBox();
+  //   }
+  //   return GestureDetector(
+  //     onTap: _onSubtitleTap,
+  //     child: Container(
+  //       height: barHeight,
+  //       color: Colors.transparent,
+  //       padding: const EdgeInsets.only(
+  //         left: 12.0,
+  //         right: 12.0,
+  //       ),
+  //       child: Icon(
+  //         _subtitleOn
+  //             ? Icons.closed_caption
+  //             : Icons.closed_caption_off_outlined,
+  //         color: _subtitleOn ? Colors.white : Colors.grey[700],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void _onSubtitleTap() {
-    setState(() {
-      _subtitleOn = !_subtitleOn;
-    });
-  }
+  // void _onSubtitleTap() {
+  //   setState(() {
+  //     _subtitleOn = !_subtitleOn;
+  //   });
+  // }
 
   void _cancelAndRestartTimer() {
     _hideTimer?.cancel();
