@@ -338,6 +338,7 @@ class ChewieController extends ChangeNotifier {
     this.hideControlsTimer = defaultHideControlsTimer,
     this.controlsSafeAreaMinimum = EdgeInsets.zero,
     required this.playerEventEmitter,
+    this.onFullScreenToggle,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -390,6 +391,7 @@ class ChewieController extends ChangeNotifier {
     List<SystemUiOverlay>? systemOverlaysAfterFullScreen,
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
+    void Function()? onFullScreenToggle,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -452,6 +454,7 @@ class ChewieController extends ChangeNotifier {
       progressIndicatorDelay:
           progressIndicatorDelay ?? this.progressIndicatorDelay,
       playerEventEmitter: playerEventEmitter ?? this.playerEventEmitter,
+      onFullScreenToggle: onFullScreenToggle ?? this.onFullScreenToggle,
     );
   }
 
@@ -621,6 +624,8 @@ class ChewieController extends ChangeNotifier {
   /// Callback for player events
   final void Function(ChewiePlayerEvents event, [Map<String, dynamic>? properties]) playerEventEmitter;
 
+  final void Function()? onFullScreenToggle;
+
   static ChewieController of(BuildContext context) {
     final chewieControllerProvider =
         context.dependOnInheritedWidgetOfExactType<ChewieControllerProvider>()!;
@@ -676,27 +681,34 @@ class ChewieController extends ChangeNotifier {
 
   void enterFullScreen() {
     if(isDisposed) return;
+    if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = true;
-    playerEventEmitter(ChewiePlayerEvents.enterFullscreen);
-    notifyListeners();
+    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+      notifyListeners();
+    });
   }
 
   void exitFullScreen() {
     if(isDisposed) return;
+    if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = false;
-    playerEventEmitter(ChewiePlayerEvents.exitFullscreen);
-    notifyListeners();
+    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+      notifyListeners();
+    });
   }
 
   void toggleFullScreen() {
     if(isDisposed) return;
+    if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = !_isFullScreen;
     if(_isFullScreen){
       playerEventEmitter(ChewiePlayerEvents.enterFullscreen);
     } else {
       playerEventEmitter(ChewiePlayerEvents.exitFullscreen);
     }
-    notifyListeners();
+    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+      notifyListeners();
+    });
   }
 
   void togglePause() {
