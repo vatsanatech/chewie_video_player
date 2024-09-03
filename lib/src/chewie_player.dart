@@ -117,72 +117,72 @@ class ChewieState extends State<Chewie> {
     );
   }
 
-  Widget _buildFullScreenVideo(
-    BuildContext context,
-    Animation<double> animation,
-    ChewieControllerProvider controllerProvider,
-  ) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        alignment: Alignment.center,
-        color: Colors.black,
-        child: controllerProvider,
-      ),
-    );
-  }
+  // Widget _buildFullScreenVideo(
+  //   BuildContext context,
+  //   Animation<double> animation,
+  //   ChewieControllerProvider controllerProvider,
+  // ) {
+  //   return Scaffold(
+  //     resizeToAvoidBottomInset: false,
+  //     body: Container(
+  //       alignment: Alignment.center,
+  //       color: Colors.black,
+  //       child: controllerProvider,
+  //     ),
+  //   );
+  // }
 
-  AnimatedWidget _defaultRoutePageBuilder(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    ChewieControllerProvider controllerProvider,
-  ) {
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (BuildContext context, Widget? child) {
-        return _buildFullScreenVideo(context, animation, controllerProvider);
-      },
-    );
-  }
+  // AnimatedWidget _defaultRoutePageBuilder(
+  //   BuildContext context,
+  //   Animation<double> animation,
+  //   Animation<double> secondaryAnimation,
+  //   ChewieControllerProvider controllerProvider,
+  // ) {
+  //   return AnimatedBuilder(
+  //     animation: animation,
+  //     builder: (BuildContext context, Widget? child) {
+  //       return _buildFullScreenVideo(context, animation, controllerProvider);
+  //     },
+  //   );
+  // }
 
-  Widget _fullScreenRoutePageBuilder(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
-    final controllerProvider = ChewieControllerProvider(
-      controller: widget.controller,
-      child: ChangeNotifierProvider<PlayerNotifier>.value(
-        value: notifier,
-        builder: (context, w) => const PlayerWithControls(),
-      ),
-    );
-
-    if (widget.controller.routePageBuilder == null) {
-      return _defaultRoutePageBuilder(
-        context,
-        animation,
-        secondaryAnimation,
-        controllerProvider,
-      );
-    }
-    return widget.controller.routePageBuilder!(
-      context,
-      animation,
-      secondaryAnimation,
-      controllerProvider,
-    );
-  }
+  // Widget _fullScreenRoutePageBuilder(
+  //   BuildContext context,
+  //   Animation<double> animation,
+  //   Animation<double> secondaryAnimation,
+  // ) {
+  //   final controllerProvider = ChewieControllerProvider(
+  //     controller: widget.controller,
+  //     child: ChangeNotifierProvider<PlayerNotifier>.value(
+  //       value: notifier,
+  //       builder: (context, w) => const PlayerWithControls(),
+  //     ),
+  //   );
+  //
+  //   if (widget.controller.routePageBuilder == null) {
+  //     return _defaultRoutePageBuilder(
+  //       context,
+  //       animation,
+  //       secondaryAnimation,
+  //       controllerProvider,
+  //     );
+  //   }
+  //   return widget.controller.routePageBuilder!(
+  //     context,
+  //     animation,
+  //     secondaryAnimation,
+  //     controllerProvider,
+  //   );
+  // }
 
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
-    final controllerProvider = ChewieControllerProvider(
-      controller: widget.controller,
-      child: ChangeNotifierProvider<PlayerNotifier>.value(
-        value: notifier,
-        builder: (context, w) => const PlayerWithControls(),
-      ),
-    );
+    // final controllerProvider = ChewieControllerProvider(
+    //   controller: widget.controller,
+    //   child: ChangeNotifierProvider<PlayerNotifier>.value(
+    //     value: notifier,
+    //     builder: (context, w) => const PlayerWithControls(),
+    //   ),
+    // );
 
     onEnterFullScreen();
 
