@@ -5,6 +5,8 @@ enum ChewiePlayerEvents {
   seekTo,
   enterFullscreen,
   exitFullscreen,
+  seekDragStart,
+  seekDragEnd,
   finished,
   exception,
   mute,
