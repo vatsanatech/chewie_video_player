@@ -53,6 +53,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   // We know that _chewieController is set in didChangeDependencies
   ChewieController get chewieController => _chewieController!;
 
+  final Stopwatch _bufferingTimer = Stopwatch();
+
   @override
   void initState() {
     super.initState();
@@ -591,9 +593,37 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     }
   }
 
+  void handleBufferEvent(bool currentBufferingState, bool newBufferingState) {
+    if(currentBufferingState == newBufferingState) return;
+
+    if (newBufferingState) {
+      _bufferStartEvent();
+    }
+    else {
+      _bufferEndEvent();
+    }
+  }
+
+  void _bufferStartEvent() {
+    _bufferingTimer.stop();
+    _bufferingTimer.reset();
+    _bufferingTimer.start();
+    chewieController.playerEventEmitter(ChewiePlayerEvents.bufferStart, {
+      'position': controller.value.position,
+    });
+  }
+
+  void _bufferEndEvent() {
+    _bufferingTimer.stop();
+    chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
+      'bufferDuration': _bufferingTimer.elapsed.inSeconds,
+    });
+  }
+
   void _updateState() {
     if (!mounted) return;
 
+    handleBufferEvent(_displayBufferingIndicator, controller.value.isBuffering);
     // display the progress bar indicator only after the buffering delay if it has been set
     if (chewieController.progressIndicatorDelay != null) {
       if (controller.value.isBuffering) {

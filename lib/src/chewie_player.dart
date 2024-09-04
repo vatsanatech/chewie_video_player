@@ -670,6 +670,8 @@ class ChewieController extends ChangeNotifier {
     if (fullScreenByDefault) {
       videoPlayerController.addListener(_fullScreenListener);
     }
+
+    playerEventEmitter(ChewiePlayerEvents.initialized);
   }
 
   Future<void> _fullScreenListener() async {
