@@ -2,6 +2,8 @@ enum ChewiePlayerEvents {
   initialized,
   play,
   pause,
+  forward,
+  rewind,
   enterFullscreen,
   exitFullscreen,
   seekDragStart,
