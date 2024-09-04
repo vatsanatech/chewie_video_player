@@ -659,6 +659,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           setState(() {
             _dragging = true;
           });
+          chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragStart, {
+            'position': controller.value.position,
+          });
 
           _hideTimer?.cancel();
         },
@@ -669,7 +672,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           setState(() {
             _dragging = false;
           });
-
+          chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragEnd, {
+            'position': controller.value.position,
+          });
           _startHideTimer();
         },
         colors: chewieController.materialProgressColors ??
