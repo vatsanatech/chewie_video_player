@@ -554,7 +554,13 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         notifier.hideStuff = false;
         _hideTimer?.cancel();
         controller.pause();
-        chewieController.playerEventEmitter(ChewiePlayerEvents.pause);
+        chewieController.playerEventEmitter(
+          ChewiePlayerEvents.pause,
+          {
+            'action_source': 'player_play_pause_button',
+            'video_position_seconds': controller.value.position.inSeconds,
+          },
+        );
       }
       else {
         _cancelAndRestartTimer();
@@ -570,7 +576,13 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           controller.play();
         }
 
-        chewieController.playerEventEmitter(ChewiePlayerEvents.play);
+        chewieController.playerEventEmitter(
+          ChewiePlayerEvents.play,
+          {
+            'action_source': 'player_play_pause_button',
+            'video_position_seconds': controller.value.position.inSeconds,
+          },
+        );
       }
     });
   }
@@ -609,14 +621,15 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     _bufferingTimer.reset();
     _bufferingTimer.start();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferStart, {
-      'position': controller.value.position,
+      'video_position_seconds': controller.value.position.inSeconds,
     });
   }
 
   void _bufferEndEvent() {
     _bufferingTimer.stop();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
-      'bufferDurationInSeconds': _bufferingTimer.elapsed.inMilliseconds / 1000,
+      'video_position_seconds': controller.value.position.inSeconds,
+      'buffer_duration_seconds': _bufferingTimer.elapsed.inMilliseconds / 1000,
     });
   }
 
@@ -656,9 +669,11 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         height: _chewieController?.progressBarHeight,
         handleHeight: _chewieController?.progressBarHandleHeight,
         onTap: () {
+          final int duration = controller.value.duration.inSeconds;
           Future.delayed(const Duration(milliseconds: 50), (){
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
-              'position': controller.value.position,
+              'seek_from': duration,
+              'seek_to': controller.value.position,
               'actionSource': 'progress_bar',
             });
           });
@@ -668,7 +683,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             _dragging = true;
           });
           chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
-            'position': controller.value.position,
+            'seek_from': controller.value.position,
             'actionSource': 'progress_bar',
           });
 
@@ -681,9 +696,11 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           setState(() {
             _dragging = false;
           });
+          final int duration = controller.value.duration.inSeconds;
           Future.delayed(const Duration(milliseconds: 50), (){
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
-              'position': controller.value.position,
+              'seek_from': duration,
+              'seek_to': controller.value.position.inSeconds,
               'actionSource': 'progress_bar',
             });
           });

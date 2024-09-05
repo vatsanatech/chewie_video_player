@@ -710,9 +710,11 @@ class _CupertinoControlsState extends State<CupertinoControls>
           height: _chewieController?.progressBarHeight,
           handleHeight: _chewieController?.progressBarHandleHeight,
           onTap: () {
+            final int duration = controller.value.duration.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
-                'position': controller.value.position,
+                'seek_from': duration,
+                'seek_to': controller.value.position,
                 'actionSource': 'progress_bar',
               });
             });
@@ -722,7 +724,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
               _dragging = true;
             });
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
-              'position': controller.value.position,
+              'seek_from': controller.value.position,
               'actionSource': 'progress_bar',
             });
 
@@ -735,9 +737,11 @@ class _CupertinoControlsState extends State<CupertinoControls>
             setState(() {
               _dragging = false;
             });
+            final int duration = controller.value.duration.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
-                'position': controller.value.position,
+                'seek_from': duration,
+                'seek_to': controller.value.position.inSeconds,
                 'actionSource': 'progress_bar',
               });
             });
@@ -784,7 +788,13 @@ class _CupertinoControlsState extends State<CupertinoControls>
         notifier.hideStuff = false;
         _hideTimer?.cancel();
         controller.pause();
-        chewieController.playerEventEmitter(ChewiePlayerEvents.pause);
+        chewieController.playerEventEmitter(
+          ChewiePlayerEvents.pause,
+          {
+            'action_source': 'player_play_pause_button',
+            'video_position_seconds': controller.value.position.inSeconds,
+          },
+        );
       } else {
         _cancelAndRestartTimer();
 
@@ -799,7 +809,13 @@ class _CupertinoControlsState extends State<CupertinoControls>
           controller.play();
         }
 
-        chewieController.playerEventEmitter(ChewiePlayerEvents.play);
+        chewieController.playerEventEmitter(
+          ChewiePlayerEvents.play,
+          {
+            'action_source': 'player_play_pause_button',
+            'video_position_seconds': controller.value.position.inSeconds,
+          }
+        );
       }
     });
   }
@@ -864,13 +880,14 @@ class _CupertinoControlsState extends State<CupertinoControls>
     _bufferingTimer.reset();
     _bufferingTimer.start();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferStart, {
-      'position': controller.value.position,
+      'video_position_seconds': controller.value.position.inSeconds,
     });
   }
 
   void _bufferEndEvent() {
     _bufferingTimer.stop();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
+      'video_position_seconds': controller.value.position.inSeconds,
       'bufferDuration': _bufferingTimer.elapsed.inSeconds,
     });
   }
