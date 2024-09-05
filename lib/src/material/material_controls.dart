@@ -616,7 +616,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   void _bufferEndEvent() {
     _bufferingTimer.stop();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
-      'bufferDuration': _bufferingTimer.elapsed.inSeconds,
+      'bufferDurationInSeconds': _bufferingTimer.elapsed.inMilliseconds / 1000,
     });
   }
 
@@ -655,12 +655,21 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         controller,
         height: _chewieController?.progressBarHeight,
         handleHeight: _chewieController?.progressBarHandleHeight,
+        onTap: () {
+          Future.delayed(const Duration(milliseconds: 50), (){
+            chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
+              'position': controller.value.position,
+              'actionSource': 'progress_bar',
+            });
+          });
+        },
         onDragStart: () {
           setState(() {
             _dragging = true;
           });
-          chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragStart, {
+          chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
             'position': controller.value.position,
+            'actionSource': 'progress_bar',
           });
 
           _hideTimer?.cancel();
@@ -672,8 +681,11 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           setState(() {
             _dragging = false;
           });
-          chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragEnd, {
-            'position': controller.value.position,
+          Future.delayed(const Duration(milliseconds: 50), (){
+            chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
+              'position': controller.value.position,
+              'actionSource': 'progress_bar',
+            });
           });
           _startHideTimer();
         },
