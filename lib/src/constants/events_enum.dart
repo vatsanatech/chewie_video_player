@@ -11,6 +11,7 @@ enum ChewiePlayerEvents {
   progressBarTap,
   bufferStart,
   bufferEnd,
+  settingsChanged,
   finished,
   exception,
   mute,

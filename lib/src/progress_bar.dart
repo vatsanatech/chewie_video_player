@@ -113,11 +113,13 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
 
               widget.onDragEnd?.call();
             },
+            onTap: () {
+              if(widget.onTap != null) widget.onTap!();
+            },
             onTapDown: (TapDownDetails details) {
               if (!controller.value.isInitialized) {
                 return;
               }
-              if(widget.onTap != null) widget.onTap!();
               _seekToRelativePosition(details.globalPosition);
             },
             child: child,
