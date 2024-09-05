@@ -372,12 +372,15 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
         child: Container(
-          height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
+          height: 32,
+          width: 32,
+          color: Colors.transparent,
           margin: const EdgeInsets.only(right: 12.0),
           padding: const EdgeInsets.only(
             left: 8.0,
             right: 8.0,
           ),
+          alignment: Alignment.center,
           child: Center(
             child: Icon(
               chewieController.isFullScreen
