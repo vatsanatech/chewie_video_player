@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+
 class CupertinoControls extends StatefulWidget {
   const CupertinoControls({
     required this.backgroundColor,
@@ -708,12 +709,21 @@ class _CupertinoControlsState extends State<CupertinoControls>
           controller,
           height: _chewieController?.progressBarHeight,
           handleHeight: _chewieController?.progressBarHandleHeight,
+          onTap: () {
+            Future.delayed(const Duration(milliseconds: 50), (){
+              chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
+                'position': controller.value.position,
+                'actionSource': 'progress_bar',
+              });
+            });
+          },
           onDragStart: () {
             setState(() {
               _dragging = true;
             });
-            chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragStart, {
-            'position': controller.value.position,
+            chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
+              'position': controller.value.position,
+              'actionSource': 'progress_bar',
             });
 
             _hideTimer?.cancel();
@@ -725,8 +735,11 @@ class _CupertinoControlsState extends State<CupertinoControls>
             setState(() {
               _dragging = false;
             });
-            chewieController.playerEventEmitter(ChewiePlayerEvents.seekDragEnd, {
-            'position': controller.value.position,
+            Future.delayed(const Duration(milliseconds: 50), (){
+              chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
+                'position': controller.value.position,
+                'actionSource': 'progress_bar',
+              });
             });
 
             _startHideTimer();
