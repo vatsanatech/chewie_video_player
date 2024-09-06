@@ -55,6 +55,8 @@ class ChewieState extends State<Chewie> {
 
   static bool allowPop = true;
 
+  final ValueNotifier<bool> magnifyPlayer = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
@@ -112,7 +114,9 @@ class ChewieState extends State<Chewie> {
       controller: widget.controller,
       child: ChangeNotifierProvider<PlayerNotifier>.value(
         value: notifier,
-        builder: (context, w) => const PlayerWithControls(),
+        builder: (context, w) => PlayerWithControls(
+            magnifyPlayer: magnifyPlayer,
+        ),
       ),
     );
   }
