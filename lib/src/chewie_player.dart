@@ -391,7 +391,7 @@ class ChewieController extends ChangeNotifier {
     List<SystemUiOverlay>? systemOverlaysAfterFullScreen,
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
-    void Function({bool fromChewiePlayer})? onFullScreenToggle,
+    void Function()? onFullScreenToggle,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -624,7 +624,7 @@ class ChewieController extends ChangeNotifier {
   /// Callback for player events
   final void Function(ChewiePlayerEvents event, [Map<String, dynamic>? properties]) playerEventEmitter;
 
-  final void Function({bool fromChewiePlayer})? onFullScreenToggle;
+  final void Function()? onFullScreenToggle;
 
   static ChewieController of(BuildContext context) {
     final chewieControllerProvider =
