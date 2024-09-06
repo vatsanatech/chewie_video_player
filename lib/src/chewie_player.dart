@@ -391,7 +391,7 @@ class ChewieController extends ChangeNotifier {
     List<SystemUiOverlay>? systemOverlaysAfterFullScreen,
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
-    void Function()? onFullScreenToggle,
+    void Function({bool fromChewiePlayer})? onFullScreenToggle,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -624,7 +624,7 @@ class ChewieController extends ChangeNotifier {
   /// Callback for player events
   final void Function(ChewiePlayerEvents event, [Map<String, dynamic>? properties]) playerEventEmitter;
 
-  final void Function()? onFullScreenToggle;
+  final void Function({bool fromChewiePlayer})? onFullScreenToggle;
 
   static ChewieController of(BuildContext context) {
     final chewieControllerProvider =
@@ -685,7 +685,7 @@ class ChewieController extends ChangeNotifier {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = true;
-    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+    Future.delayed(const Duration(milliseconds: 10), (){
       notifyListeners();
     });
   }
@@ -694,7 +694,7 @@ class ChewieController extends ChangeNotifier {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = false;
-    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+    Future.delayed(const Duration(milliseconds: 10), (){
       notifyListeners();
     });
   }
