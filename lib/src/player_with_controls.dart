@@ -1,16 +1,27 @@
+import 'dart:math';
+
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/helpers/adaptive_controls.dart';
 import 'package:chewie/src/notifiers/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vector_math/vector_math_64.dart' hide Colors;
 import 'package:video_player/video_player.dart';
 
 class PlayerWithControls extends StatelessWidget {
-  const PlayerWithControls({super.key});
+  const PlayerWithControls({
+    super.key,
+    required this.magnifyPlayer,
+  });
+
+  final ValueNotifier<bool> magnifyPlayer;
 
   @override
   Widget build(BuildContext context) {
     final ChewieController chewieController = ChewieController.of(context);
+
+    double lastScale = 1.0;
+    double scale = 1.0;
 
     double calculateAspectRatio(BuildContext context) {
       final size = MediaQuery.of(context).size;
@@ -43,18 +54,22 @@ class PlayerWithControls extends StatelessWidget {
         children: <Widget>[
           if (chewieController.placeholder != null)
             chewieController.placeholder!,
-          InteractiveViewer(
-            transformationController: chewieController.transformationController,
-            maxScale: chewieController.maxScale,
-            panEnabled: chewieController.zoomAndPan,
-            scaleEnabled: chewieController.zoomAndPan,
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: chewieController.aspectRatio ??
-                    chewieController.videoPlayerController.value.aspectRatio,
-                child: VideoPlayer(chewieController.videoPlayerController),
-              ),
-            ),
+          ValueListenableBuilder(
+            valueListenable: magnifyPlayer,
+            builder: (context, _, __) {
+              return Transform(
+                transform: Matrix4.diagonal3(Vector3(scale.clamp(1.0, 5.0),
+                    scale.clamp(1.0, 5.0), scale.clamp(1.0, 5.0))),
+                alignment: FractionalOffset.center,
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: chewieController.aspectRatio ??
+                        chewieController.videoPlayerController.value.aspectRatio,
+                    child: VideoPlayer(chewieController.videoPlayerController),
+                  ),
+                ),
+              );
+            }
           ),
           if (chewieController.overlay != null) chewieController.overlay!,
           if (Theme.of(context).platform != TargetPlatform.iOS)
@@ -92,12 +107,25 @@ class PlayerWithControls extends StatelessWidget {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return Center(
-        child: SizedBox(
-          height: constraints.maxHeight,
-          width: constraints.maxWidth,
-          child: AspectRatio(
-            aspectRatio: calculateAspectRatio(context),
-            child: buildPlayerWithControls(chewieController, context),
+        child: InteractiveViewer(
+          maxScale: 1,
+          minScale: 1,
+          panEnabled: chewieController.zoomAndPan,
+          scaleEnabled: chewieController.zoomAndPan,
+          onInteractionStart: (details){
+            lastScale = scale;
+          },
+          onInteractionUpdate: (ScaleUpdateDetails details){
+            scale = min(chewieController.maxScale, lastScale * details.scale);
+            magnifyPlayer.value = !magnifyPlayer.value;
+          },
+          child: SizedBox(
+            height: constraints.maxHeight,
+            width: constraints.maxWidth,
+            child: AspectRatio(
+              aspectRatio: calculateAspectRatio(context),
+              child: buildPlayerWithControls(chewieController, context),
+            ),
           ),
         ),
       );

@@ -55,6 +55,8 @@ class ChewieState extends State<Chewie> {
 
   static bool allowPop = true;
 
+  final ValueNotifier<bool> magnifyPlayer = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
@@ -112,7 +114,9 @@ class ChewieState extends State<Chewie> {
       controller: widget.controller,
       child: ChangeNotifierProvider<PlayerNotifier>.value(
         value: notifier,
-        builder: (context, w) => const PlayerWithControls(),
+        builder: (context, w) => PlayerWithControls(
+            magnifyPlayer: magnifyPlayer,
+        ),
       ),
     );
   }
@@ -685,7 +689,7 @@ class ChewieController extends ChangeNotifier {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = true;
-    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+    Future.delayed(const Duration(milliseconds: 10), (){
       notifyListeners();
     });
   }
@@ -694,7 +698,7 @@ class ChewieController extends ChangeNotifier {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = false;
-    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
+    Future.delayed(const Duration(milliseconds: 10), (){
       notifyListeners();
     });
   }
