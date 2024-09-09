@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/helpers/adaptive_controls.dart';
 import 'package:chewie/src/notifiers/index.dart';
@@ -57,10 +55,15 @@ class PlayerWithControls extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: magnifyPlayer,
             builder: (context, _, __) {
-              return Transform(
-                transform: Matrix4.diagonal3(Vector3(scale.clamp(1.0, 5.0),
-                    scale.clamp(1.0, 5.0), scale.clamp(1.0, 5.0))),
-                alignment: FractionalOffset.center,
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                transform: Matrix4.diagonal3(Vector3(
+                  scale.clamp(1.0, 5.0),
+                  scale.clamp(1.0, 5.0),
+                  scale.clamp(1.0, 5.0),
+                )),
+                alignment: Alignment.center,
+                transformAlignment: FractionalOffset.center,
                 child: Center(
                   child: AspectRatio(
                     aspectRatio: chewieController.aspectRatio ??
@@ -110,8 +113,16 @@ class PlayerWithControls extends StatelessWidget {
             lastScale = scale;
           },
           onInteractionUpdate: (ScaleUpdateDetails details){
-            scale = min(chewieController.maxScale, lastScale * details.scale);
-            magnifyPlayer.value = !magnifyPlayer.value;
+            if(!chewieController.zoomAndPan) return;
+            final double thresholdScale = (1 + chewieController.maxScale) / 2;
+            if(scale == chewieController.maxScale && (lastScale * details.scale) <= thresholdScale){
+              scale = 1;
+              magnifyPlayer.value = !magnifyPlayer.value;
+            }
+            else if(scale == 1 && (lastScale * details.scale) > thresholdScale){
+              scale = chewieController.maxScale;
+              magnifyPlayer.value = !magnifyPlayer.value;
+            }
           },
           child: SizedBox(
             height: constraints.maxHeight,
