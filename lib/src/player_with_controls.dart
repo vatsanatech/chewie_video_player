@@ -56,7 +56,7 @@ class PlayerWithControls extends StatelessWidget {
             valueListenable: magnifyPlayer,
             builder: (context, _, __) {
               return AnimatedContainer(
-                duration: const Duration(milliseconds: 150), // Adjust the duration as needed
+                duration: const Duration(milliseconds: 150),
                 transform: Matrix4.diagonal3(Vector3(
                   scale.clamp(1.0, 5.0),
                   scale.clamp(1.0, 5.0),
