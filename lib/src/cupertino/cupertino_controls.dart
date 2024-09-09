@@ -715,7 +715,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
                 'seek_from': duration,
                 'seek_to': controller.value.position,
-                'actionSource': 'progress_bar',
+                'action_source': 'progress_bar',
               });
             });
           },
@@ -725,7 +725,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
             });
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
               'seek_from': controller.value.position,
-              'actionSource': 'progress_bar',
+              'action_source': 'progress_bar',
             });
 
             _hideTimer?.cancel();
@@ -742,7 +742,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
                 'seek_from': duration,
                 'seek_to': controller.value.position.inSeconds,
-                'actionSource': 'progress_bar',
+                'action_source': 'progress_bar',
               });
             });
 

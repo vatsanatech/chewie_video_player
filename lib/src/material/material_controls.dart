@@ -677,7 +677,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
               'seek_from': duration,
               'seek_to': controller.value.position,
-              'actionSource': 'progress_bar',
+              'action_source': 'progress_bar',
             });
           });
         },
@@ -687,7 +687,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           });
           chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
             'seek_from': controller.value.position,
-            'actionSource': 'progress_bar',
+            'action_source': 'progress_bar',
           });
 
           _hideTimer?.cancel();
@@ -704,7 +704,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
               'seek_from': duration,
               'seek_to': controller.value.position.inSeconds,
-              'actionSource': 'progress_bar',
+              'action_source': 'progress_bar',
             });
           });
           _startHideTimer();
