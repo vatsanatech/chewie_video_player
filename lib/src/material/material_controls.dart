@@ -542,10 +542,11 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer =
           Timer(const Duration(milliseconds: 300), () {
-        setState(() {
-          _cancelAndRestartTimer();
-        });
-      });
+            setState(() {
+              _cancelAndRestartTimer();
+              notifier.hideStuff = true;
+            });
+          });
     });
   }
 
