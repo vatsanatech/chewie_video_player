@@ -724,8 +724,8 @@ class _CupertinoControlsState extends State<CupertinoControls>
               _dragging = true;
             });
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragStart, {
-              'seek_from': controller.value.position,
-              'action_source': 'progress_bar',
+              'seek_from': controller.value.position.inSeconds,
+              'actionSource': 'progress_bar',
             });
 
             _hideTimer?.cancel();
