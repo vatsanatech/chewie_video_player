@@ -95,6 +95,7 @@ class ChewieState extends State<Chewie> {
     } else if (_isFullScreen) {
       popFullScreen();
       _isFullScreen = false;
+      if(mounted) setState(() {});
     }
   }
 
@@ -689,18 +690,14 @@ class ChewieController extends ChangeNotifier {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = true;
-    Future.delayed(const Duration(milliseconds: 10), (){
-      notifyListeners();
-    });
+    notifyListeners();
   }
 
   void exitFullScreen() {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = false;
-    Future.delayed(const Duration(milliseconds: 10), (){
-      notifyListeners();
-    });
+    notifyListeners();
   }
 
   void toggleFullScreen() {
@@ -712,9 +709,7 @@ class ChewieController extends ChangeNotifier {
     } else {
       playerEventEmitter(ChewiePlayerEvents.exitFullscreen);
     }
-    Future.delayed(Duration(milliseconds: onFullScreenToggle != null ? 200 : 10), (){
-      notifyListeners();
-    });
+    notifyListeners();
   }
 
   void togglePause() {
