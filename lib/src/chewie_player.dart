@@ -240,10 +240,12 @@ class ChewieState extends State<Chewie> {
     // }
 
     if (widget.controller.deviceOrientationsOnEnterFullScreen != null) {
-      /// Optional user preferred settings
-      SystemChrome.setPreferredOrientations(
-        widget.controller.deviceOrientationsOnEnterFullScreen!,
-      );
+      ///Added delay to avoid portrait screen distortion
+      Future.delayed(const Duration(milliseconds: 130), () {
+        SystemChrome.setPreferredOrientations(
+          widget.controller.deviceOrientationsOnEnterFullScreen!,
+        );
+      });
     } else {
       final isLandscapeVideo = videoWidth > videoHeight;
       final isPortraitVideo = videoWidth < videoHeight;
