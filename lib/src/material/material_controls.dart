@@ -11,6 +11,7 @@ import 'package:chewie/src/material/widgets/playback_speed_dialog.dart';
 import 'package:chewie/src/models/option_item.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/notifiers/index.dart';
+import 'package:chewie/src/player_keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -344,6 +345,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         }
       },
       child: AnimatedOpacity(
+        key: const Key(ChewiePlayerKeys.muteToggleIcon),
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
         child: ClipRect(
@@ -369,6 +371,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     return GestureDetector(
       onTap: _onExpandCollapse,
       child: AnimatedOpacity(
+        key: const Key(ChewiePlayerKeys.fullscreenToggleIcon),
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
         child: Container(
@@ -418,6 +421,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         }
       },
       child: CenterPlayButton(
+        key: const Key(ChewiePlayerKeys.playToggleIcon),
         backgroundColor: Colors.transparent,
         iconColor: Colors.white,
         isFinished: isFinished,
