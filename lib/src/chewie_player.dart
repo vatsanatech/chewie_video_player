@@ -216,11 +216,9 @@ class ChewieState extends State<Chewie> {
       SystemUiMode.manual,
       overlays: widget.controller.systemOverlaysAfterFullScreen,
     );
-    Future.delayed(const Duration(milliseconds: 130), (){
       SystemChrome.setPreferredOrientations(
         widget.controller.deviceOrientationsAfterFullScreen,
       );
-    });
   }
 
   void onEnterFullScreen() {
