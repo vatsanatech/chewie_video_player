@@ -216,9 +216,11 @@ class ChewieState extends State<Chewie> {
       SystemUiMode.manual,
       overlays: widget.controller.systemOverlaysAfterFullScreen,
     );
-    SystemChrome.setPreferredOrientations(
-      widget.controller.deviceOrientationsAfterFullScreen,
-    );
+    Future.delayed(const Duration(milliseconds: 130), (){
+      SystemChrome.setPreferredOrientations(
+        widget.controller.deviceOrientationsAfterFullScreen,
+      );
+    });
   }
 
   void onEnterFullScreen() {
@@ -226,7 +228,6 @@ class ChewieState extends State<Chewie> {
     final videoHeight =
         widget.controller.videoPlayerController.value.size.height;
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     // if (widget.controller.systemOverlaysOnEnterFullScreen != null) {
     //   /// Optional user preferred settings
@@ -245,6 +246,7 @@ class ChewieState extends State<Chewie> {
         SystemChrome.setPreferredOrientations(
           widget.controller.deviceOrientationsOnEnterFullScreen!,
         );
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
       });
     } else {
       final isLandscapeVideo = videoWidth > videoHeight;
