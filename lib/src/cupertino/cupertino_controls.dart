@@ -714,7 +714,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
                 'seek_from': duration,
-                'seek_to': controller.value.position,
+                'seek_to': controller.value.position.inSeconds,
                 'action_source': 'progress_bar',
               });
             });

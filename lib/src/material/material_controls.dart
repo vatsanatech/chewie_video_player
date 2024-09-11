@@ -418,7 +418,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         }
       },
       child: CenterPlayButton(
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.transparent,
         iconColor: Colors.white,
         isFinished: isFinished,
         isPlaying: controller.value.isPlaying,
@@ -677,7 +677,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           Future.delayed(const Duration(milliseconds: 50), (){
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
               'seek_from': duration,
-              'seek_to': controller.value.position,
+              'seek_to': controller.value.position.inSeconds,
               'action_source': 'progress_bar',
             });
           });
