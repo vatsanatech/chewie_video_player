@@ -7,3 +7,4 @@ export 'src/material/material_controls.dart';
 export 'src/material/material_desktop_controls.dart';
 export 'src/models/index.dart';
 export 'src/constants/events_enum.dart';
+export 'src/player_keys.dart';
