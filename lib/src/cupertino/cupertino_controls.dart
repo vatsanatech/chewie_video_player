@@ -710,7 +710,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
           height: _chewieController?.progressBarHeight,
           handleHeight: _chewieController?.progressBarHandleHeight,
           onTap: () {
-            final int duration = controller.value.duration.inSeconds;
+            final int duration = controller.value.position.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
                 'seek_from': duration,
@@ -737,7 +737,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
             setState(() {
               _dragging = false;
             });
-            final int duration = controller.value.duration.inSeconds;
+            final int duration = controller.value.position.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
                 'seek_from': duration,
@@ -864,6 +864,9 @@ class _CupertinoControlsState extends State<CupertinoControls>
     }
   }
 
+  static DateTime lastBufferStartEventTime = DateTime(1990, 1, 1);
+  static DateTime lastBufferEndEventTime = DateTime(1990, 1, 1);
+
   void handleBufferEvent(bool currentBufferingState, bool newBufferingState) {
     if(currentBufferingState == newBufferingState) return;
 
@@ -876,6 +879,9 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   void _bufferStartEvent() {
+    if(DateTime.now().difference(lastBufferStartEventTime) < const Duration(milliseconds: 10)) return;
+    lastBufferStartEventTime = DateTime.now();
+
     _bufferingTimer.stop();
     _bufferingTimer.reset();
     _bufferingTimer.start();
@@ -885,10 +891,13 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   void _bufferEndEvent() {
+    if(DateTime.now().difference(lastBufferEndEventTime) < const Duration(milliseconds: 10)) return;
+    lastBufferEndEventTime = DateTime.now();
+
     _bufferingTimer.stop();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
       'video_position_seconds': controller.value.position.inSeconds,
-      'bufferDuration': _bufferingTimer.elapsed.inSeconds,
+      'buffer_duration_seconds': _bufferingTimer.elapsed.inMilliseconds / 1000,
     });
   }
 

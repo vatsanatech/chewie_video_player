@@ -1,5 +1,6 @@
 enum ChewiePlayerEvents {
   initialized,
+  playbackStarted,
   play,
   pause,
   forward,
