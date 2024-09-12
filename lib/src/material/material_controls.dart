@@ -613,6 +613,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     }
   }
 
+  static DateTime lastBufferStartEventTime = DateTime(1990, 1, 1);
+  static DateTime lastBufferEndEventTime = DateTime(1990, 1, 1);
+
   void handleBufferEvent(bool currentBufferingState, bool newBufferingState) {
     if(currentBufferingState == newBufferingState) return;
 
@@ -625,6 +628,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   }
 
   void _bufferStartEvent() {
+    if(DateTime.now().difference(lastBufferStartEventTime) < const Duration(milliseconds: 10)) return;
+    lastBufferStartEventTime = DateTime.now();
+
     _bufferingTimer.stop();
     _bufferingTimer.reset();
     _bufferingTimer.start();
@@ -634,6 +640,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   }
 
   void _bufferEndEvent() {
+    if(DateTime.now().difference(lastBufferEndEventTime) < const Duration(milliseconds: 10)) return;
+    lastBufferEndEventTime = DateTime.now();
+
     _bufferingTimer.stop();
     chewieController.playerEventEmitter(ChewiePlayerEvents.bufferEnd, {
       'video_position_seconds': controller.value.position.inSeconds,
