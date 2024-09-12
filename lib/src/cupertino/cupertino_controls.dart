@@ -710,7 +710,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
           height: _chewieController?.progressBarHeight,
           handleHeight: _chewieController?.progressBarHandleHeight,
           onTap: () {
-            final int duration = controller.value.duration.inSeconds;
+            final int duration = controller.value.position.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
                 'seek_from': duration,
@@ -737,7 +737,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
             setState(() {
               _dragging = false;
             });
-            final int duration = controller.value.duration.inSeconds;
+            final int duration = controller.value.position.inSeconds;
             Future.delayed(const Duration(milliseconds: 50), (){
               chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
                 'seek_from': duration,

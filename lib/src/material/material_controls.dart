@@ -677,7 +677,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         height: _chewieController?.progressBarHeight,
         handleHeight: _chewieController?.progressBarHandleHeight,
         onTap: () {
-          final int duration = controller.value.duration.inSeconds;
+          final int duration = controller.value.position.inSeconds;
           Future.delayed(const Duration(milliseconds: 50), (){
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarTap, {
               'seek_from': duration,
@@ -704,7 +704,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           setState(() {
             _dragging = false;
           });
-          final int duration = controller.value.duration.inSeconds;
+          final int duration = controller.value.position.inSeconds;
           Future.delayed(const Duration(milliseconds: 50), (){
             chewieController.playerEventEmitter(ChewiePlayerEvents.progressBarDragEnd, {
               'seek_from': duration,
