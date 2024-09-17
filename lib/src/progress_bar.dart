@@ -81,6 +81,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
 
     return chewieController.draggableProgressBar
         ? GestureDetector(
+           key: const Key(ChewiePlayerKeys.seekbar),
             onHorizontalDragStart: (DragStartDetails details) {
               if (!controller.value.isInitialized) {
                 return;
