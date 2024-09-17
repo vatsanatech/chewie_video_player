@@ -300,7 +300,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   children: <Widget>[
                     if (chewieController.isLive)
                       const Expanded(child: Text('LIVE'))
-                    else
+                    else if(chewieController.showTime)
                       _buildPosition(iconColor),
                     const Spacer(),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
@@ -310,7 +310,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
               // SizedBox(
               //   height: chewieController.isFullScreen ? 15.0 : 0,
               // ),
-              if (!chewieController.isLive)
+              if (!chewieController.isLive && chewieController.showProgressBar)
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.only(right: 20),
