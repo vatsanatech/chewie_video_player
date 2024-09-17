@@ -346,6 +346,8 @@ class ChewieController extends ChangeNotifier {
     this.controlsSafeAreaMinimum = EdgeInsets.zero,
     required this.playerEventEmitter,
     this.onFullScreenToggle,
+    this.showTime = true,
+    this.showProgressBar = true,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -399,6 +401,8 @@ class ChewieController extends ChangeNotifier {
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
     void Function()? onFullScreenToggle,
+    bool? showTime,
+    bool? showProgressBar,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -408,6 +412,8 @@ class ChewieController extends ChangeNotifier {
     Function(ChewiePlayerEvents event, [Map<String, dynamic>? properties])? playerEventEmitter,
   }) {
     return ChewieController(
+      showTime: showTime ?? this.showTime,
+      showProgressBar: showProgressBar ?? this.showProgressBar,
       draggableProgressBar: draggableProgressBar ?? this.draggableProgressBar,
       videoPlayerController:
           videoPlayerController ?? this.videoPlayerController,
@@ -532,6 +538,9 @@ class ChewieController extends ChangeNotifier {
   /// Max scale when zooming
   final double maxScale;
 
+  // Defines whether progress bar will be shown or not
+  final bool showProgressBar;
+
   /// Defines customised controls. Check [MaterialControls] or
   /// [CupertinoControls] for reference.
   final Widget? customControls;
@@ -584,6 +593,9 @@ class ChewieController extends ChangeNotifier {
 
   /// Defines if the player will sleep in fullscreen or not
   final bool allowedScreenSleep;
+
+  /// Defines if the time duration will be visible or not
+  final bool showTime;
 
   /// Defines if the controls should be shown for live stream video
   final bool isLive;
