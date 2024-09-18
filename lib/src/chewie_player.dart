@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chewie/src/chewie_progress_colors.dart';
 import 'package:chewie/src/constants/events_enum.dart';
@@ -667,30 +668,36 @@ class ChewieController extends ChangeNotifier {
   }
 
   Future<dynamic> _initialize() async {
-    await videoPlayerController.setLooping(looping);
+    try{
+      await videoPlayerController.setLooping(looping);
 
-    if ((autoInitialize || autoPlay) &&
-        !videoPlayerController.value.isInitialized) {
-      await videoPlayerController.initialize();
-    }
-
-    if (autoPlay) {
-      if (fullScreenByDefault) {
-        enterFullScreen();
+      if ((autoInitialize || autoPlay) &&
+          !videoPlayerController.value.isInitialized) {
+        await videoPlayerController.initialize();
       }
 
-      await videoPlayerController.play();
-    }
+      if (autoPlay) {
+        if (fullScreenByDefault) {
+          enterFullScreen();
+        }
 
-    if (startAt != null) {
-      await videoPlayerController.seekTo(startAt!);
-    }
+        await videoPlayerController.play();
+      }
 
-    if (fullScreenByDefault) {
-      videoPlayerController.addListener(_fullScreenListener);
-    }
+      if (startAt != null) {
+        await videoPlayerController.seekTo(startAt!);
+      }
 
-    playerEventEmitter(ChewiePlayerEvents.initialized);
+      if (fullScreenByDefault) {
+        videoPlayerController.addListener(_fullScreenListener);
+      }
+
+      playerEventEmitter(ChewiePlayerEvents.initialized);
+    }
+    catch(e,s){
+      log(e.toString());
+      log(s.toString());
+    }
   }
 
   Future<void> _fullScreenListener() async {
