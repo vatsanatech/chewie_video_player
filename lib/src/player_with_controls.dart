@@ -9,10 +9,11 @@ import 'package:video_player/video_player.dart';
 class PlayerWithControls extends StatelessWidget {
   const PlayerWithControls({
     super.key,
-    required this.magnifyPlayer,
+    required this.magnifyPlayer, required this.isFullscreen,
   });
 
   final ValueNotifier<bool> magnifyPlayer;
+  final bool isFullscreen;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,9 @@ class PlayerWithControls extends StatelessWidget {
     ) {
       return chewieController.showControls ? Stack(
         children: [
-          const AdaptiveControls(),
+          AdaptiveControls(
+            isFullScreen: isFullscreen,
+          ),
           if(chewieController.landscapeControlsOverlay != null)
             chewieController.landscapeControlsOverlay!,
           if(chewieController.portraitFixedControls != null && !chewieController.isFullScreen)
