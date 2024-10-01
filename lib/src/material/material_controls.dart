@@ -20,10 +20,11 @@ import 'package:video_player/video_player.dart';
 class MaterialControls extends StatefulWidget {
   const MaterialControls({
     this.showPlayButton = true,
-    super.key,
+    super.key, required this.isFullScreen,
   });
 
   final bool showPlayButton;
+  final bool isFullScreen;
 
   @override
   State<StatefulWidget> createState() {
@@ -146,7 +147,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                           _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
-                  if(chewieController.isFullScreen && chewieController.landscapeControls != null)
+                  if(widget.isFullScreen && chewieController.landscapeControls != null)
                     AnimatedOpacity(
                       opacity: notifier.hideStuff ? 0.0 : 1.0,
                       duration: const Duration(milliseconds: 250),
@@ -281,14 +282,14 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: barHeight + (chewieController.isFullScreen ? 10.0 : 0),
+        height: barHeight + (widget.isFullScreen ? 10.0 : 0),
         padding: EdgeInsets.only(
           left: 20,
-          bottom: !chewieController.isFullScreen ? 10.0 : 0,
+          bottom: !widget.isFullScreen ? 10.0 : 0,
         ),
         child: SafeArea(
           top: false,
-          bottom: chewieController.isFullScreen,
+          bottom: widget.isFullScreen,
           minimum: chewieController.controlsSafeAreaMinimum,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -386,7 +387,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           alignment: Alignment.center,
           child: Center(
             child: Icon(
-              chewieController.isFullScreen
+              widget.isFullScreen
                   ? Icons.fullscreen_exit
                   : Icons.fullscreen,
               color: Colors.white,
@@ -574,9 +575,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         _cancelAndRestartTimer();
 
         if (!controller.value.isInitialized) {
-          controller.initialize().then((_) {
-            controller.play();
-          });
+          // controller.initialize().then((_) {
+          //   controller.play();
+          // });
         } else {
           if (isFinished) {
             controller.seekTo(Duration.zero);

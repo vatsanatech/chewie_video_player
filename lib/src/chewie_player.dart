@@ -117,7 +117,8 @@ class ChewieState extends State<Chewie> {
       child: ChangeNotifierProvider<PlayerNotifier>.value(
         value: notifier,
         builder: (context, w) => PlayerWithControls(
-            magnifyPlayer: magnifyPlayer,
+          magnifyPlayer: magnifyPlayer,
+          isFullscreen: widget.isFullscreen,
         ),
       ),
     );
@@ -673,7 +674,7 @@ class ChewieController extends ChangeNotifier {
 
       if ((autoInitialize || autoPlay) &&
           !videoPlayerController.value.isInitialized) {
-        await videoPlayerController.initialize();
+        // await videoPlayerController.initialize();
       }
 
       if (autoPlay) {

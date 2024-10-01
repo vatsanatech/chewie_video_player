@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 class AdaptiveControls extends StatelessWidget {
   const AdaptiveControls({
-    super.key,
+    super.key, required this.isFullScreen,
   });
+
+  final bool isFullScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,9 @@ class AdaptiveControls extends StatelessWidget {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
       case TargetPlatform.iOS:
-        return const MaterialControls();
+        return MaterialControls(
+          isFullScreen: isFullScreen,
+        );
 
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
@@ -25,7 +29,9 @@ class AdaptiveControls extends StatelessWidget {
       //     iconColor: Color.fromARGB(255, 200, 200, 200),
       //   );
       default:
-        return const MaterialControls();
+        return MaterialControls(
+          isFullScreen: isFullScreen,
+        );
     }
   }
 }
