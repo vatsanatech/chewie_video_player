@@ -93,7 +93,7 @@ class ChewieState extends State<Chewie> {
     if (isControllerFullScreen && !_isFullScreen) {
       _isFullScreen = isControllerFullScreen;
       await _pushFullScreenWidget(context);
-    } else if (_isFullScreen) {
+    } else if (_isFullScreen && widget.controller.allowFullscreenExit) {
       popFullScreen();
       _isFullScreen = false;
       if(mounted) setState(() {});
@@ -350,6 +350,7 @@ class ChewieController extends ChangeNotifier {
     this.onFullScreenToggle,
     this.showTime = true,
     this.showProgressBar = true,
+    this.supportPlayerLock = false,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -405,6 +406,7 @@ class ChewieController extends ChangeNotifier {
     void Function()? onFullScreenToggle,
     bool? showTime,
     bool? showProgressBar,
+    bool? supportPlayerLock,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -515,6 +517,9 @@ class ChewieController extends ChangeNotifier {
 
   /// Play the video as soon as it's displayed
   final bool autoPlay;
+
+  /// Whether or not to support player lock
+  final bool supportPlayerLock;
 
   /// Non-Draggable Progress Bar
   final bool draggableProgressBar;
@@ -655,8 +660,13 @@ class ChewieController extends ChangeNotifier {
   }
 
   bool _isFullScreen = false;
+  bool _isPlayerLocked = false;
 
   bool get isFullScreen => _isFullScreen;
+  bool get isPlayerLocked => _isPlayerLocked;
+
+  bool _allowFullscreenExit = true;
+  bool get allowFullscreenExit => _allowFullscreenExit;
 
   bool get isPlaying => videoPlayerController.value.isPlaying;
 
@@ -708,6 +718,16 @@ class ChewieController extends ChangeNotifier {
     }
   }
 
+  void togglePlayerLock() {
+    if(!supportPlayerLock || isDisposed) return;
+    _isPlayerLocked = !_isPlayerLocked;
+    _allowFullscreenExit = false;
+    Future.delayed(const Duration(milliseconds: 200), (){
+      _allowFullscreenExit = true;
+    });
+    notifyListeners();
+  }
+
   void enterFullScreen() {
     if(isDisposed) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
@@ -717,6 +737,7 @@ class ChewieController extends ChangeNotifier {
 
   void exitFullScreen() {
     if(isDisposed) return;
+    if(supportPlayerLock && _isPlayerLocked) return;
     if(onFullScreenToggle != null) onFullScreenToggle!();
     _isFullScreen = false;
     notifyListeners();
