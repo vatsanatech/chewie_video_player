@@ -120,7 +120,12 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         child: AbsorbPointer(
           absorbing: notifier.hideStuff,
           child: Stack(
-            children: [
+            children: chewieController.isPlayerLocked && chewieController.isFullScreen
+            ? [
+              if(chewieController.supportPlayerLock && chewieController.isFullScreen)
+                _buildPlayerLock(),
+            ]
+            : [
               if (_displayBufferingIndicator)
                 const Center(
                   child: CircularProgressIndicator(),
@@ -134,6 +139,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   duration: const Duration(milliseconds: 250),
                   child: chewieController.customControls!,
                 ),
+              if(chewieController.supportPlayerLock && chewieController.isFullScreen)
+                _buildPlayerLock(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -162,6 +169,35 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   child: _buildMuteButton(controller),
                 ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayerLock() {
+    return Positioned(
+      top: 8,
+      right: 6,
+      child: GestureDetector(
+        onTap: (){
+          chewieController.togglePlayerLock();
+        },
+        child: AnimatedOpacity(
+          opacity: notifier.hideStuff ? 0.0 : 1.0,
+          duration: const Duration(milliseconds: 250),
+          child: Container(
+            height: 40,
+            width: 40,
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            child: Icon(
+              chewieController.isPlayerLocked
+                  ? Icons.lock_outline_rounded
+                  : Icons.lock_open_rounded,
+              size: 22,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

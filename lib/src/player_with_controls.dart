@@ -116,7 +116,7 @@ class PlayerWithControls extends StatelessWidget {
             lastScale = scale;
           },
           onInteractionUpdate: (ScaleUpdateDetails details){
-            if(!chewieController.zoomAndPan) return;
+            if(!chewieController.zoomAndPan || chewieController.isPlayerLocked) return;
             final double thresholdScale = (1 + chewieController.maxScale) / 2;
             if(scale == chewieController.maxScale && (lastScale * details.scale) <= thresholdScale){
               scale = 1;
