@@ -179,26 +179,44 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     return Positioned(
       top: 8,
       right: 6,
-      child: GestureDetector(
-        onTap: (){
-          chewieController.togglePlayerLock();
-        },
-        child: AnimatedOpacity(
-          opacity: notifier.hideStuff ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 250),
-          child: Container(
-            height: 40,
-            width: 40,
-            color: Colors.transparent,
-            alignment: Alignment.center,
-            child: Icon(
-              chewieController.isPlayerLocked
-                  ? Icons.lock_outline_rounded
-                  : Icons.lock_open_rounded,
-              size: 22,
-              color: Colors.white,
+      child: AnimatedOpacity(
+        opacity: notifier.hideStuff ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 250),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if(chewieController.isPlayerLocked)
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                chewieController.playerLockText,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Noto Sans',
+                ),
+              ),
             ),
-          ),
+            GestureDetector(
+              onTap: (){
+                chewieController.togglePlayerLock();
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: Icon(
+                  chewieController.isPlayerLocked
+                      ? Icons.lock_rounded
+                      : Icons.lock_open_rounded,
+                  size: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
