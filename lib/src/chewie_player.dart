@@ -351,6 +351,7 @@ class ChewieController extends ChangeNotifier {
     this.showTime = true,
     this.showProgressBar = true,
     this.supportPlayerLock = false,
+    this.playerLockText = '',
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -407,6 +408,7 @@ class ChewieController extends ChangeNotifier {
     bool? showTime,
     bool? showProgressBar,
     bool? supportPlayerLock,
+    String? playerLockText,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -472,6 +474,7 @@ class ChewieController extends ChangeNotifier {
           progressIndicatorDelay ?? this.progressIndicatorDelay,
       playerEventEmitter: playerEventEmitter ?? this.playerEventEmitter,
       onFullScreenToggle: onFullScreenToggle ?? this.onFullScreenToggle,
+      playerLockText: playerLockText ?? this.playerLockText,
     );
   }
 
@@ -646,6 +649,8 @@ class ChewieController extends ChangeNotifier {
   /// Adds additional padding to the controls' [SafeArea] as desired.
   /// Defaults to [EdgeInsets.zero].
   final EdgeInsets controlsSafeAreaMinimum;
+
+  final String playerLockText;
 
   /// Callback for player events
   final void Function(ChewiePlayerEvents event, [Map<String, dynamic>? properties]) playerEventEmitter;
